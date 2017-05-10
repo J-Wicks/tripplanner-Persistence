@@ -21,17 +21,40 @@ $(function () {
     // This looks like a great place to start AJAX work with a request for all attractions. Don't forget that these kinds of requests are async, so we won't have all of the attractions until it comes back, but once it comes back we can make the option tags
   // ~~~~~~~~~~~~~~~~~~~~~~~
 
+    var listGetter = function (type){
+        var selectList;
+        if (type === 'hotels')selectList = $hotelSelect;
+        if (type === 'restaurants') selectList = $restaurantSelect;
+        if (type === 'activities') selectList = $activitySelect;
+        $.ajax({
+            url: '/api/' + type
+        })
+        .then((resultArr) => {
+            
+            resultArr.forEach(makeOption, selectList);
+            attractionsModule.loadEnhancedAttractions(type, resultArr);
+        });
+    };
+
+    // $.ajax({
+    //     method: 'GET',
+    //     url: '/api/hotels'
+    // })
+    // .then((hotels) => {
+    //     hotels.forEach(makeOption, $hotelSelect);
+    // });
     // make all the option tags (second arg of `forEach` is a `this` binding)
-    hotels.forEach(makeOption, $hotelSelect);
-    restaurants.forEach(makeOption, $restaurantSelect);
-    activities.forEach(makeOption, $activitySelect);
+    listGetter('hotels');
+    listGetter('restaurants');
+    listGetter('activities');
+
 
     // Once you've made AJAX calls to retrieve this information,
     // call attractions.loadEnhancedAttractions in the fashion
     // exampled below in order to integrate it.
-    attractionsModule.loadEnhancedAttractions('hotels', hotels);
-    attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
-    attractionsModule.loadEnhancedAttractions('activities', activities);
+    // attractionsModule.loadEnhancedAttractions('hotels', hotels);
+    // attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
+    // attractionsModule.loadEnhancedAttractions('activities', activities);
 
     function makeOption(databaseAttraction) {
         var $option = $('<option></option>') // makes a new option tag
