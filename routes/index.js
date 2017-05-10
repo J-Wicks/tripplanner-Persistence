@@ -6,6 +6,7 @@ var Activity = require('../models').Activity;
 var hotelRouter = require('./api/hotels');
 var activityRouter = require('./api/activities');
 var restaurantRouter = require('./api/restaurants');
+var dayRouter = require('./api/days');
 
 router.get('/', function(req, res, next) {
   Promise.all([
@@ -23,6 +24,7 @@ router.get('/', function(req, res, next) {
   .catch(next);
 });
 
+router.use('/api/days', dayRouter)
 router.use('/api/hotels', hotelRouter);
 router.use('/api/activities', activityRouter);
 router.use('/api/restaurants', restaurantRouter);
