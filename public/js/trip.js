@@ -60,16 +60,16 @@ var tripModule = (function () {
       url: '/api/days/' + newDay.number
         })
         .then((day) => {
+                 
+        if (days.length === 1) {
           days.push(newDay);
+          // currentDay = newDay;
+        }
+        else{ days.push(newDay)}
+        
+        switchTo(newDay);
         });
 
-    if (days.length === 1) {
-
-
-    days.push(newDay);
-      currentDay = newDay;
-    }
-    switchTo(newDay);
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,6 +104,9 @@ var tripModule = (function () {
 
   var publicAPI = {
 
+    getCurrentDay: function(){
+      return currentDay.number;
+    },
     load: function () {
 
       // ~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,8 +117,11 @@ var tripModule = (function () {
     url: '/api/days/'
     })
     .then((allDays) => {
+
       if(allDays.length > 0){
+
       allDays.forEach((day) => days.push(dayModule.create(day)));
+
       currentDay = days[allDays.length-1];
       switchTo(currentDay)}
 

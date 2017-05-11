@@ -123,6 +123,13 @@ var dayModule = (function () {
   // ~~~~~~~~~~~~~~~~~~~~~~~
   Day.prototype.removeAttraction = function (attraction) {
     // removing from the day object
+    $.ajax({
+      type: 'DELETE',
+      url: `/api/days/${tripModule.getCurrentDay()}/${attraction.type}/${attraction.id}`
+    })
+
+    .then(() => {
+      console.log(attraction);
     switch (attraction.type) {
       case 'hotel':
         this.hotel = null;
@@ -135,9 +142,11 @@ var dayModule = (function () {
         break;
       default: console.error('bad type:', attraction);
     }
-    // deactivating UI
     attraction.hide();
+    });
+
   };
+
 
   // globally accessible module methods
 

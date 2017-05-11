@@ -27,5 +27,7 @@ module.exports = {
 	Hotel,
 	Restaurant,
 	Activity,
-	Day
+	Day,
+	DayRestaurant,
+	DayActivity
 };
