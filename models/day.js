@@ -5,6 +5,6 @@ var db = require('./_db');
 
 var Day = db.define('day', {
   number: Sequelize.INTEGER
-});
+}); 
 
 module.exports = Day;

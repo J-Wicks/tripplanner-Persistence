@@ -54,17 +54,19 @@ var tripModule = (function () {
   function addDay () { 
     if (this && this.blur) this.blur(); // removes focus box from buttons
     var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
-    
+  
     $.ajax({
-            method: 'POST',
-            url: '/api/days/'+ newDay.number
+      method: 'POST',
+      url: '/api/days/' + newDay.number
         })
-        .then((newDay) => {
-            days.push(newDay);
+        .then((day) => {
+          days.push(newDay);
         });
 
-    // days.push(newDay);
     if (days.length === 1) {
+
+
+    days.push(newDay);
       currentDay = newDay;
     }
     switchTo(newDay);
@@ -77,7 +79,17 @@ var tripModule = (function () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
     // remove from the collection
-    var index = days.indexOf(currentDay),
+
+        $.ajax({
+      method: 'Delete',
+      url: '/api/days/' + currentDay.number
+        })
+        .then((day) => {
+          //nothing here;
+        })
+
+    .then(function(){
+      var index = days.indexOf(currentDay),
       previousDay = days.splice(index, 1)[0],
       newCurrent = days[index] || days[index - 1];
     // fix the remaining day numbers
@@ -86,8 +98,8 @@ var tripModule = (function () {
     });
     switchTo(newCurrent);
     previousDay.hideButton();
+  });
   }
-
   // globally accessible module methods
 
   var publicAPI = {
@@ -97,7 +109,21 @@ var tripModule = (function () {
       // ~~~~~~~~~~~~~~~~~~~~~~~
         //If we are trying to load existing Days, then let's make a request to the server for the day. Remember this is async. For each day we get back what do we need to do to it?
       // ~~~~~~~~~~~~~~~~~~~~~~~
-      $(addDay);
+      $.ajax({
+    method: 'GET',
+    url: '/api/days/'
+    })
+    .then((allDays) => {
+      if(allDays.length > 0){
+      allDays.forEach((day) => days.push(dayModule.create(day)));
+      currentDay = days[allDays.length-1];
+      switchTo(currentDay)}
+
+      else addDay();
+    })
+
+
+      
     },
 
     switchTo: switchTo,

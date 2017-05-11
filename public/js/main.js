@@ -1,4 +1,10 @@
 'use strict';
-/* global $ tripModule */
 
-$(tripModule.load);
+// var Day = require('../../models/day');
+
+/* global $ tripModule */ 
+
+$(
+
+
+tripModule.load);
