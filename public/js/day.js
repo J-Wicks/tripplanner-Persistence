@@ -45,8 +45,15 @@ var dayModule = (function () {
   // automatic day button handling
 
   Day.prototype.setNumber = function (num) {
+    console.log(this.id)
+    $.ajax({
+      method: 'PUT',
+      url: `/api/days/${this.id}/${num}`
+    }).then(() => {
+    console.log(num);
     this.number = num;
-    this.$button.text(num);
+    this.$button.text(num);});
+
   };
 
   Day.prototype.buildButton = function () {

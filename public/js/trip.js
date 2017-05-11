@@ -53,20 +53,16 @@ var tripModule = (function () {
   // ~~~~~~~~~~~~~~~~~~~~~~~
   function addDay () { 
     if (this && this.blur) this.blur(); // removes focus box from buttons
-    var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
+    // var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
   
     $.ajax({
       method: 'POST',
-      url: '/api/days/' + newDay.number
+      url: '/api/days/' +( Number(days.length) + 1)
         })
         .then((day) => {
-                 
-        if (days.length === 1) {
+         var newDay = dayModule.create(day);       
           days.push(newDay);
           // currentDay = newDay;
-        }
-        else{ days.push(newDay)}
-        
         switchTo(newDay);
         });
 
@@ -92,8 +88,8 @@ var tripModule = (function () {
       var index = days.indexOf(currentDay),
       previousDay = days.splice(index, 1)[0],
       newCurrent = days[index] || days[index - 1];
-    // fix the remaining day numbers
-    days.forEach(function (day, i) {
+      // fix the remaining day numbers
+      days.forEach(function (day, i) {
       day.setNumber(i + 1);
     });
     switchTo(newCurrent);
@@ -125,7 +121,7 @@ var tripModule = (function () {
       currentDay = days[allDays.length-1];
       switchTo(currentDay)}
 
-      else addDay();
+      else {addDay()};
     })
 
 

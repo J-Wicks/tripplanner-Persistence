@@ -22,6 +22,13 @@ router.get('/:day', function(req, res, next){
 
 });
 
+router.put('/:dayId/:number', function(req, res, next){
+	 Day.update({number: req.params.number}, {where: {id: req.params.dayId}})
+	 .then(function(result){
+	 	res.json(result);
+	 }).catch(next);
+
+});
 
 router.delete('/:day', function(req, res, next){
 	Day.destroy({where: {number: req.params.day}})
